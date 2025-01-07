@@ -9,14 +9,34 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package'
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    steps:
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom.xml'
+        mavenOptions: '-Xmx3072m'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        goals: 'package'
+
+- stage: Verify
+  jobs:
+  - job: Verify
+    pool: server
+    steps: 
+    - task: ContrastIntegration@2
+      inputs:
+        ContrastService: 'shraddha-apptwo'
+        Application: '5d25e38a-fdc6-41fa-a6bf-b2561da1dd65'
+        StatusFilter: 'Reported, Suspicious, Confirmed'
+        CriticalLimit: '1'
+        HighLimit: '1'
+        MediumLimit: '0'
+        LowLimit: '0'
+        NoteLimit: '0'
