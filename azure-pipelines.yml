@@ -33,10 +33,10 @@ stages:
     - task: ContrastIntegration@2
       inputs:
         ContrastService: 'shraddha-apptwo'
-        Application: '5d25e38a-fdc6-41fa-a6bf-b2561da1dd65'
+        Application: '105820b9-7ee1-4094-85f2-d501bba89253'
         StatusFilter: 'Reported, Suspicious, Confirmed'
         CriticalLimit: '1'
         HighLimit: '1'
-        MediumLimit: '0'
+        MediumLimit: '1'
         LowLimit: '0'
         NoteLimit: '0'
